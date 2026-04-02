@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blaq Wave</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=1600&q=80&fit=crop');
+      background-size: cover;
+      background-position: center 30%;
+      z-index: 0;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.55) 0%,
+        rgba(0,0,0,0.25) 60%,
+        rgba(0,0,0,0.45) 100%
+      );
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 68px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+      color: #fff;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    /* hamburger — hidden on desktop */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 30;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .btn-shop {
+      padding: 0.45rem 1.4rem;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-shop:hover { background: #fff; color: #000; }
+
+    /* ── HERO CONTENT (bottom-left) ── */
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2.5rem 3.5rem;
+    }
+
+    .label-italic {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+      color: rgba(255,255,255,0.92);
+      line-height: 1;
+      margin-bottom: 0.15rem;
+    }
+
+    .label-bold {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: clamp(3rem, 9vw, 7rem);
+      color: #fff;
+      line-height: 0.95;
+      margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+   @media screen and (max-width: 900px) {
+      .hero-btns {
+        width: 50%;
+        margin-left: 50%;
+        margin-bottom: 5%;
+         gap: 1.5rem; 
+        
+        }
+}
+    .btn-outline {
+      padding: 0.7rem 2rem;
+      border: 2px solid rgba(255,255,255,0.8);
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 400;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: #fff; }
+
+    .btn-filled {
+      padding: 0.7rem 2rem;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      color: #000;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-filled:hover { background: rgba(255,255,255,0.85); }
+
+    /* ── RIGHT PANEL (desktop) ── */
+    .hero-right {
+      position: absolute;
+      right: 2.5rem;
+      bottom: 3.5rem;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.2rem;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .social-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+      color: #fff;
+    }
+    .social-icon:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.6); }
+    .social-icon svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-box {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 1.4rem 1.4rem 1.2rem;
+      width: 340px;
+    }
+
+    .newsletter-label {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.4rem;
+      letter-spacing: 0.01em;
+    }
+
+    .newsletter-field-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.04em;
+    }
+
+    .newsletter-row {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .newsletter-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.88rem;
+      padding: 0.65rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      min-width: 0;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+
+    .newsletter-btn {
+      padding: 0.55rem 1.1rem;
+      background: #fff;
+      color: #000;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      margin: 4px;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .newsletter-btn:hover { background: #e8e8e8; }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: absolute;
+      right: 2.5rem;
+      bottom: 1.2rem;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+    .scroll-arrow svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.75); fill: none; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+
+    /* ── COPYRIGHT ── */
+    .copyright {
+      position: absolute;
+      left: 2.5rem;
+      bottom: 1.5rem;
+      z-index: 5;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── MOBILE DRAWER ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 15;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .mobile-menu.open {
+      display: flex;
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: #fff; }
+    .mobile-menu .btn-shop-mobile {
+      margin-top: 0.5rem;
+      padding: 0.6rem 2.2rem;
+      border: 2px solid #fff;
+      border-radius: 999px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #fff;
+      background: transparent;
+      text-decoration: none;
+    }
+
+    /* ── MOBILE BOTTOM PANEL ── */
+    /* On small screens, move the newsletter + socials below the headings */
+    .mobile-bottom {
+      display: none;
+    }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS
+    ════════════════════════════════════════ */
+
+    /* Tablet (≤ 900px) */
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-content { padding: 0 1.5rem 10rem; }
+
+      /* Hide desktop right panel */
+      .hero-right { display: none; }
+      .scroll-hint { display: none; }
+
+      /* Show mobile bottom */
+      .mobile-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        position: absolute;
+        bottom: 2.5rem;
+        left: 1.5rem;
+        right: 1.5rem;
+        z-index: 5;
+      }
+
+      .mobile-socials {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: flex-start;
+      }
+
+      .newsletter-box {
+        width: 100%;
+      }
+
+      .copyright {
+        left: 1.5rem;
+        bottom: 1rem;
+        font-size: 0.72rem;
+      }
+    }
+
+    /* Phone (≤ 500px) */
+    @media (max-width: 500px) {
+      .label-italic { font-size: 1.25rem; }
+      .label-bold   { font-size: clamp(2.6rem, 13vw, 3.5rem); margin-bottom: 1.4rem; }
+
+      .hero-content { padding: 0 1.2rem 11rem; }
+
+      .btn-outline,
+      .btn-filled { padding: 0.6rem 1.5rem; font-size: 0.88rem; }
+
+      .mobile-bottom {
+        left: 1.2rem;
+        right: 1.2rem;
+        bottom: 2.2rem;
+      }
+
+      .social-icon { width: 38px; height: 38px; }
+      .social-icon svg { width: 16px; height: 16px; }
+
+      .newsletter-box { padding: 1rem 1rem 0.9rem; }
+      .newsletter-label { font-size: 0.75rem; }
+
+      .copyright { left: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <!-- ── NAVBAR ── -->
+  <nav>
+    <div class="nav-logo">Blaq Wave</div>
+
+    <!-- Desktop links -->
+    <ul class="nav-links">
+      <li><a href="#">Artists</a></li>
+      <li><a href="#">Releases</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#" class="btn-shop">Shop</a></li>
+    </ul>
+
+    <!-- Hamburger (mobile only) -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── MOBILE FULL-SCREEN MENU ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" onclick="closeMenu()">Artists</a>
+    <a href="#" onclick="closeMenu()">Releases</a>
+    <a href="#" onclick="closeMenu()">About</a>
+    <a href="#" onclick="closeMenu()">Contact</a>
+    <a href="#" class="btn-shop-mobile" onclick="closeMenu()">Shop</a>
+  </div>
+
+  <!-- ── LEFT HERO CONTENT ── -->
+  <div class="hero-content">
+    <p class="label-italic">Rwanda music Power House</p>
+    <h1 class="label-bold">Blaq Wave Inc</h1>
+    <div class="hero-btns">
+      <a href="#" class="btn-outline">Artists</a>
+      <a href="#" class="btn-filled">Contact</a>
+    </div>
+  </div>
+
+  <!-- ── DESKTOP: Right panel ── -->
+  <div class="hero-right">
+    <div class="social-icons">
+      <a href="#" class="social-icon" aria-label="Spotify">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 0 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.723a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.938.938 0 0 1-.583-1.782c3.532-1.155 9.404-.932 13.115 1.338a.937.937 0 0 1-.915 1.6z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Twitter">
+        <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.06a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.936 4.936 0 0 0 4.604 3.417 9.867 9.867 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0 0 24 4.59z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+    <div class="newsletter-box">
+      <div class="newsletter-label">Subscribe to newsletter <span>↘</span></div>
+      <div class="newsletter-field-label">Email</div>
+      <div class="newsletter-row">
+        <input class="newsletter-input" type="email" placeholder="Email" />
+        <button class="newsletter-btn">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MOBILE: socials + newsletter stacked at bottom ── -->
+  <div class="mobile-bottom">
+    <div class="mobile-socials social-icons">
+      <a href="#" class="social-icon" aria-label="Spotify">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.622.622 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 0 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857zm1.223-2.723a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.973-.519.781.781 0 0 1 .519-.972c3.632-1.102 8.147-.568 11.234 1.328a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.938.938 0 0 1-.583-1.782c3.532-1.155 9.404-.932 13.115 1.338a.937.937 0 0 1-.915 1.6z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Twitter">
+        <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.06a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.936 4.936 0 0 0 4.604 3.417 9.867 9.867 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0 0 24 4.59z"/></svg>
+      </a>
+      <a href="#" class="social-icon" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+    <div class="newsletter-box">
+      <div class="newsletter-label">Subscribe to newsletter <span>↘</span></div>
+      <div class="newsletter-field-label">Email</div>
+      <div class="newsletter-row">
+        <input class="newsletter-input" type="email" placeholder="Email" />
+        <button class="newsletter-btn">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint (desktop only) -->
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <polyline points="19 12 12 19 5 12"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="copyright">©2026 — Blaq Wave Inc</div>
+</section>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on outside click
+  mobileMenu.addEventListener('click', (e) => {
+    if (e.target === mobileMenu) closeMenu();
+  });
+</script>
+
+</body>
+</html>
